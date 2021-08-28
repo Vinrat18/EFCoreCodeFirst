@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Datalayer;
+using Datalayer.Domain;
+using System;
 
 namespace Repository_UnitOfWork
 {
@@ -6,7 +8,20 @@ namespace Repository_UnitOfWork
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			using (var uom = new UnitOfWork(new SchoolContext()))
+			{
+				var students = uom.Students.GetAll();
+
+				var instructor = new Instructor
+				{
+					Name = "Awesome Guy",
+					Experience = 18,
+				};
+				uom.Instructors.Add(instructor);
+				uom.Complete();
+			}
+
+			Console.ReadLine();
 		}
 	}
 }
